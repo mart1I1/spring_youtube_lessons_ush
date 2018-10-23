@@ -1,6 +1,7 @@
 package com.test.EventLogger;
 
 import com.test.event.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CacheFileEventLogger extends FileEventLogger {
 
+    @Value("${cacheSize:5}")
     private int cacheSize;
     private List<Event> cache;
 
@@ -35,6 +38,7 @@ public class CacheFileEventLogger extends FileEventLogger {
         cache.forEach(super::logEvent);
     }
 
+    @PreDestroy
     public void destroy() {
         if (!cache.isEmpty()) {
             writeEventsFromCache();

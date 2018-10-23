@@ -1,9 +1,16 @@
 package com.test.client;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Client {
 
+    @Value("${id:-1}")
     private String id;
+    @Value("${name:Ivan}")
     private String fullName;
+    @Value("${greeting:GoodBye}")
     private String greeting;
 
     public String getGreeting() {
@@ -37,6 +44,9 @@ public class Client {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Client() {
     }
 
     public Client(String id, String fullName) {

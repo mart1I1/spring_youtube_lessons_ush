@@ -10,8 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+@Component
 public class FileEventLogger implements EventLogger {
 
+    @Value("${filePath}")
     private File file;
 
     public FileEventLogger() {
@@ -29,6 +31,7 @@ public class FileEventLogger implements EventLogger {
         }
     }
 
+    @PostConstruct
     public void init() throws IOException {
         if (!this.file.canWrite())
             file.createNewFile();

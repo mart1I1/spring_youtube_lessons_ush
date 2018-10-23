@@ -8,10 +8,14 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 
+@Component
+@Scope(scopeName = "prototype")
 public class Event {
     private int id = new Random().nextInt();
     private String msg;
+    @Autowired
     private Date date;
+    @Autowired
     private DateFormat df;
 
     @Override
