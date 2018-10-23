@@ -17,6 +17,10 @@ public class App {
 
     private Client client;
 
+    public void setEventLogger(EventLogger eventLogger) {
+        this.eventLogger = eventLogger;
+    }
+
     private EventLogger eventLogger;
 
     private Map<EventType, EventLogger> loggers;
@@ -37,8 +41,8 @@ public class App {
         App app = context.getBean("app", App.class);
         Event event = context.getBean(Event.class);
 
-        app.logEvent(EventType.ERROR, event);
-        app.logEvent(EventType.INFO, event);
+        app.logEvent(null, event);
+//        app.logEvent(EventType.INFO, event);
 
         System.out.println(app.client.toString());
 

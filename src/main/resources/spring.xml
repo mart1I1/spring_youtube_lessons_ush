@@ -36,7 +36,7 @@
 
     <bean id="app" class="com.test.app.App"
         c:_0-ref="client"
-        c:_1-ref="consoleEventLogger"
+        c:eventLogger="#{T(com.test.event.Event).isDay(8,18) ? consoleEventLogger : fileEventLogger}"
         c:_2-ref="loggerMap"/>
 
     <bean id="event" class="com.test.event.Event" scope="prototype">
