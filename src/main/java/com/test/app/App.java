@@ -1,6 +1,7 @@
 package com.test.app;
 
 import com.test.EventLogger.EventLogger;
+import com.test.aspects.LoggingAspect;
 import com.test.client.Client;
 import com.test.event.Event;
 import com.test.event.EventType;
@@ -16,14 +17,21 @@ import java.util.Map;
 public class App {
 
     private Client client;
+    private LoggingAspect loggingAspect;
+    private EventLogger eventLogger;
+    private Map<EventType, EventLogger> loggers;
 
-    public void setEventLogger(EventLogger eventLogger) {
-        this.eventLogger = eventLogger;
+    public LoggingAspect getLoggingAspect() {
+        return loggingAspect;
     }
 
-    private EventLogger eventLogger;
+    public void setLoggers(Map<EventType, EventLogger> loggers) {
+        this.loggers = loggers;
+    }
 
-    private Map<EventType, EventLogger> loggers;
+    public void setLoggingAspect(LoggingAspect loggingAspect) {
+        this.loggingAspect = loggingAspect;
+    }
 
     public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
@@ -33,23 +41,24 @@ public class App {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-//        //AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-//        context.register(LoggerConfig.class, AppConfig.class);
-//        context.scan("com.test");
-//        context.refresh();
 
-        App app = context.getBean("app", App.class);
+        App app = context.getBean(App.class);
         Event event = context.getBean(Event.class);
 
-        app.logEvent(null, event);
-//        app.logEvent(EventType.INFO, event);
+        app.logEvent(EventType.INFO, event);
 
-        System.out.println(app.client.toString());
+        app.printLoggerCount();
 
         context.close();
     }
 
-    private void logEvent(EventType type, Event event) {
+    private void printLoggerCount() {
+        System.out.println("print");
+        if (this.getLoggingAspect() != null)
+            this.getLoggingAspect().getLogEventCount().forEach((first, second) -> System.out.println(first + " " + second));
+    }
+
+    public void logEvent(EventType type, Event event) {
 //        String message = msg.replaceAll(com.test.client.getId(), com.test.client.getFullName());
         EventLogger logger = loggers.get(type);
         if (logger == null)
